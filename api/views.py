@@ -250,7 +250,7 @@ def upload_zip(requests):
             with ZipFile(zip_file_path, 'r') as zip:
                 zip.extractall(saved_file_path)
 
-            input_images_path = os.path.join(saved_file_path, file_name.split('.')[0])
+            # input_images_path = os.path.join(saved_file_path, file_name.split('.')[0])
             processed_images = {}
             original_images = {}
 
@@ -261,8 +261,11 @@ def upload_zip(requests):
             try:
                 # Create the folder by putting a zero-byte object with a folder key
 
-                for filename in os.listdir(input_images_path):
-                    file_path = os.path.join(input_images_path, filename)
+                for filename in os.listdir(saved_file_path):
+                    if(filename.endswith('.zip')):
+                        continue
+
+                    file_path = os.path.join(saved_file_path, filename)
                     with open(file_path, 'rb') as f:
                         filename_for_s3_input = folder_key + 'input_folder/' + client_name + '-' + project_name + '-' + model_name + '-mymodel_Dec13_keras_new_dataset.keras-input_folder-output_folder-' + uuid + '-.' + filename.split('.')[-1]
                         util.save_input_into_bucket(s3_client, bucket_name=bucket_name, image_file=f, filename=filename_for_s3_input)

@@ -1,0 +1,10 @@
+Flask
+python-dotenv
+boto3
+django
+djangorestframework
+django-cors-headers
+requests
+pyjwt
+jsonify
+cryptography

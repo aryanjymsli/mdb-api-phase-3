@@ -262,7 +262,7 @@ def upload_zip(requests):
                 # Create the folder by putting a zero-byte object with a folder key
 
                 for filename in os.listdir(saved_file_path):
-                    if(filename.endswith('.zip')):
+                    if(filename.endswith('.zip') or os.path.isdir(os.path.join(saved_file_path, filename))):
                         continue
 
                     file_path = os.path.join(saved_file_path, filename)

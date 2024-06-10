@@ -331,5 +331,6 @@ def get_images(requests):
     for image_key in filtered_images:
         base64_images[image_key] = util.get_image_as_base64(s3_client, settings.BUCKET_NAME, image_key)
     
+    
     # return base64_images
     return JsonResponse(base64_images)

@@ -262,14 +262,15 @@ def upload_zip(requests):
                 # Create the folder by putting a zero-byte object with a folder key
 
                 for filename in os.listdir(saved_file_path):
+                    uuid_for_file = str(uuid4())
                     if(filename.endswith('.zip') or os.path.isdir(os.path.join(saved_file_path, filename))):
                         continue
 
                     file_path = os.path.join(saved_file_path, filename)
                     with open(file_path, 'rb') as f:
-                        filename_for_s3_input = folder_key + 'input_folder/' + client_name + '-' + project_name + '-' + model_name + '-mymodel_Dec13_keras_new_dataset.keras-input_folder-output_folder-' + uuid + '-.' + filename.split('.')[-1]
+                        filename_for_s3_input = folder_key + 'input_folder/' + client_name + '-' + project_name + '-' + model_name + '-mymodel_Dec13_keras_new_dataset.keras-input_folder-output_folder-' + uuid_for_file + '-.' + filename.split('.')[-1]
                         util.save_input_into_bucket(s3_client, bucket_name=bucket_name, image_file=f, filename=filename_for_s3_input)
-                    filename_for_s3_output = folder_key + 'output_folder/processed_image_' + client_name + '-' + project_name + '-' + model_name + '-mymodel_Dec13_keras_new_dataset.keras-input_folder-output_folder-' + uuid + '-.' + filename.split('.')[-1]
+                    filename_for_s3_output = folder_key + 'output_folder/processed_image_' + client_name + '-' + project_name + '-' + model_name + '-mymodel_Dec13_keras_new_dataset.keras-input_folder-output_folder-' + uuid_for_file + '-.' + filename.split('.')[-1]
                     processed_image_base64 = util.fetch_output_from_bucket(settings.CLOUDFRONT_URL, filename_for_s3_output)
                     processed_images[filename.split('.')[0]] = processed_image_base64
                     original_images[filename.split('.')[0]] = base64.b64encode(open(file_path, 'rb').read()).decode('utf-8')
